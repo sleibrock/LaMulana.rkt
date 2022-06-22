@@ -48,13 +48,28 @@ This program will attempt to:
 * Create a graph data structure representing all items
 * Create a tree walk simulation program to emulate gameplay
 * Analyze game paths and see what the most "optimal" order is
+
+
+Gameplay Guide for those reading:
+* La-Mulana is broken up into 19 different levels
+* There are 9 rooms, each with two different sides - front and back
+* There is at minimum one boss per each room
+* The final boss requires all 8 main boss guardians to be defeated
+* Certain items are needed to access each boss
+
+Speedrun guide:
+* Beat Boss 1 through 4, collect as many coins/items as possible
+* Start working on backside rooms to reach Boss 5
+* Collect more items, puzzles, and then gradually defeat Boss 6 and 7
+* Collect another batch of important items, then defeat Boss 8
+* Finally, collect all items and activate all puzzle pieces
+* Defeat Boss 9, and then escape La-Mulana
 |#
 
 
 (require (only-in racket/cmdline command-line)
          (only-in racket/contract -> any/c or/c hash/c listof define/contract parameter/c)
          )
-
 
 
 ; a toggle to turn on 100% collectathon or not
@@ -78,7 +93,7 @@ This program will attempt to:
 (define/contract (Build-Graph)
   (-> (hash/c symbol? (listof symbol?)))
   (make-immutable-hash
-   '(; items in the surface
+   `(; items in the surface
      (scanner . ())
      (shell   . ())
      (reader1 . ())
@@ -162,8 +177,8 @@ This program will attempt to:
      ; * the la-mulana talisman to dispel
      ; * dragonbone skull
      ; * keyblade to unlock the boss fight
-     ((treasure-of-life . (origin birth life death keyblade talisman dragonbone))
-      ))))
+     (treasure-of-life . (origin birth life death keyblade talisman dragonbone))
+     )))
 
 
 (module+ main
