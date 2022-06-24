@@ -94,50 +94,75 @@ Speedrun guide:
   (-> (hash/c symbol? (listof symbol?)))
   (make-immutable-hash
    `(; items in the surface
-     (scanner . ())
-     (shell   . ())
-     (reader1 . ())
-     (feather . (book-of-dead))
-     (birth   . (origin))
-     (lifeup1 . ())
+     (scanner     . ()) ; store 10g
+     (shell       . ()) ; free
+     (feather     . (serpent)) ; argus
+     (birth       . (origin)) ; cliffside waterfall
+     (lifeup1     . ()) ; below the seal
+     (map1        . ()) ; on a skeleton
+     (buckler     . ()) ; store
+     (waterproof  . ()) ; store
+     (laptop2     . ()) ; after 4 guardians
+     (mulana      . (diary)) ; after diary sequence
+     (reader.exe  . ()) ; buy from store 50g
+     (deathv.exe  . ()) ; free behind xelpud statue
+     (yagomap.exe . ()) ; store 20g
+     (mekuri.exe  . ()) ; waterfall ladder secret tent
 
      ; items in gate of guidance
-     (grail    . ()) ; holy grail is required later on
-     (treasure . (pepper))
-     (jewel1   . ()) ; amphisbaena's jewel
-     (lifeup2  . ())
+     (grail      . ()) ; holy grail is required later on
+     (shuriken   . ()) ; screen transition glitch
+     (jewel1     . ()) ; amphisbaena's jewel
+     (lifeup2    . ()) ; entrance
+     (map2       . ()) ; chest before elevator
+     (crucifix   . (flare life)) ; anti-ghosts
+     (treasure   . (pepper)) ; gate of illusion quest
+     (guild.exe  . ()) ; 60g secret store
+     (yagostr.exe . (eden)) ; after gate of illusion shortcut
 
      ; items in the mausoleum of giants
-     (pegasus . ())
-     (jewel2  . ()) ; sakit's gem
-     (lifeup3 . ())
+     (rolling . ()) ; ghost king miniboss
+     (hermes  . ()) ; store 60g
+     (jewel2  . ()) ; sakit's gem with day/night/star puzzle
+     (lifeup3 . ()) ; inside a foot
+     (map3    . ()) ; floor switch puzzle
 
      ; items in temple of the sun
-     (dagger . ())
+     (dagger  . ())
      (lifeup4 . ())
-     (jewel3 . ()) ; ellmac's gem
+     (map4    . ())
+     (jewel3  . ()) ; ellmac's gem
      (book-of-dead . (origin))
-     (mirror . (origin))
+     (mirror       . (origin))
+     (pregnant . (woman))
 
      ; items in the spring in the sky
-     (origin      . (helmet))
-     (scalesphere . (origin))
-     (jewel5      . ())
+     (origin      . (helmet)) ; elevator jump
+     (scalesphere . (origin)) ; after miniboss
+     (jewel5      . ()) ; whack-a-fish
+     (lifeup5     . (birth)) ; left elevator 
+     (glove       . ()) ; after unlocking the push block
+     (caltrops    . ()) ; transition glitch
 
      ; inferno cavern
-     (fire-cape   . ())
-     (text1       . ())
-     (chainwhip   . ())
+     (flare       . ()) ; transition glitch
+     (map6        . ()) ; free
+     (fire-cape   . ()) ; at the end
+     (text1       . ()) ; hidden rock spot by grail tab
+     (chainwhip   . (claws)) ; after miniboss
 
      ; chamber of extinction
-     (life . (birth))
+     (life . (birth)) ; dark platform jumping section
 
      ; twin labyrinth
      (lifeup6 . ())
+     (helmet  . ())
+     (dragonbone . (helmet)) ; kinda not but kinda is
      (time-lamp . (grenades))
 
      ; endless corridor
      (keyblade . ())
+     (twin-statue . (infinity-key))
 
      ; shrine of awakening
      (crystal-skull . ())
@@ -145,11 +170,19 @@ Speedrun guide:
      ; flipside!!
      ; gate of illusion
      (pepper . (eden-fruit))
-     (smalldoll . ())
+     (smalldoll . (treasure))
+     (infinity-key . (smalldoll))
+
+     ; graveyard of giants
+     (grenades . (plane)) ; you need plane to escape goddess tower
+     (gauntlet . (mirror life)) ; needs life seal to access
+     (silvershield . (mirror)) ; freebie
+     (mirai.exe . (mirror))
      
      ; tower of ruin
-     (spears . ())
+     (spears  . ())
      (lifeup5 . ())
+     (djed    . (death))
 
      ; items in temple of the moon
      (axe     . ())
@@ -161,6 +194,7 @@ Speedrun guide:
      (flailwhip . ())
 
      ; chamber of birth
+     (woman . ()) 
      (cup . (angelshield))
 
      ; dimensional corridor
