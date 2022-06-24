@@ -128,13 +128,13 @@ Speedrun guide:
      (map3    . ()) ; floor switch puzzle
 
      ; items in temple of the sun
-     (dagger  . ())
-     (lifeup4 . ())
-     (map4    . ())
-     (jewel3  . ()) ; ellmac's gem
+     (dagger       . ())
+     (lifeup4      . ())
+     (map4         . ())
+     (jewel3       . ()) ; ellmac's gem
      (book-of-dead . (origin))
      (mirror       . (origin))
-     (pregnant . (woman))
+     (pregnant     . (woman))
 
      ; items in the spring in the sky
      (origin      . (helmet)) ; elevator jump
@@ -147,20 +147,31 @@ Speedrun guide:
      ; inferno cavern
      (flare       . ()) ; transition glitch
      (map6        . ()) ; free
-     (fire-cape   . ()) ; at the end
-     (text1       . ()) ; hidden rock spot by grail tab
-     (chainwhip   . (claws)) ; after miniboss
+     (ice-cape    . ()) ; at the end
+     (bunplus.com . ()) ; hidden rock spot by grail tab
+     (capstar.exe . ()) ; 150g from store
+     (chainwhip   . (birth claws)) ; after miniboss
 
      ; chamber of extinction
-     (life . (birth)) ; dark platform jumping section
+     (chakram . ()) ; free
+     (life    . (birth)) ; dark platform jumping section
+     (map7    . ())
+     (lifeup6 . ())
+     (mantra.exe . (magatama torude.exe)) ; use magatama jewel then scan
 
      ; twin labyrinth
-     (lifeup6 . ())
-     (helmet  . ())
+     (katana     . (twin-statue))
+     (ring       . ())
+     (lifeup7    . ())
+     (helmet     . ())
+     (bracelet   . ()) ; 150g
      (dragonbone . (helmet)) ; kinda not but kinda is
-     (time-lamp . (grenades))
+     (time-lamp  . (grenades)) ; 200g
+     (jewel7     . ())
+     (map8       . ())
 
      ; endless corridor
+     (map9     . ())
      (keyblade . ())
      (twin-statue . (infinity-key))
 
@@ -174,31 +185,33 @@ Speedrun guide:
      (infinity-key . (smalldoll))
 
      ; graveyard of giants
-     (grenades . (plane)) ; you need plane to escape goddess tower
-     (gauntlet . (mirror life)) ; needs life seal to access
+     (grenades     . (plane)) ; you need plane to escape goddess tower
+     (gauntlet     . (mirror life)) ; needs life seal to access
      (silvershield . (mirror)) ; freebie
-     (mirai.exe . (mirror))
+     (mirai.exe    . (mirror)) ; freebie
      
      ; tower of ruin
      (spears  . ())
-     (lifeup5 . ())
-     (djed    . (death))
+     (lifeup8 . (mirror)) ; enter thru graveyard
+     (djed    . (death)) ; needs secret passage from birth->extinct->ruin
 
      ; items in temple of the moon
      (axe     . ())
      (serpent . (book-of-dead)) ; for feather
+     (medicine . cup)
 
      ; tower of the goddess
-     (plane . ())
+     (plane        . ())
      (eye-of-truth . ())
-     (flailwhip . ())
+     (flailwhip    . ())
 
      ; chamber of birth
      (woman . ()) 
-     (cup . (angelshield))
+     (cup   . (angelshield))
 
      ; dimensional corridor
      (angelshield . (crystal-skull))
+     (jewel8 . ())
 
      ; The Secret Treasure of Life is the end goal item
      ; To get this item, you must beat Mother in her final "true" form
