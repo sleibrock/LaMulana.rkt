@@ -73,18 +73,18 @@ Speedrun guide:
 
 
 ; a toggle to turn on 100% collectathon or not
-(define/contract collect-everything?
+(define/contract *collect-everything?*
   (parameter/c boolean?)
   (make-parameter #f))
 
 
 (define/contract (only-if-wrap P)
-  (-> (parameter/c boolean?) (-> any/c))
+  (-> (parameter/c boolean?) (-> any/c any/c))
   (λ (value) (if (P) value '())))
 
 (define/contract only-if-100%
   (-> list? list?)
-  (only-if-wrap collect-everything?))
+  (only-if-wrap *collect-everything?*))
   
 ; This is the complete and total graph of items in La-Mulana
 ; All NECESSARY items are here
@@ -102,7 +102,7 @@ Speedrun guide:
      (map1        . ()) ; on a skeleton
      (buckler     . ()) ; store
      (waterproof  . ()) ; store
-     (laptop2     . ()) ; after 4 guardians
+     (laptop2     . '(jewel1 jewel2 jewel3 jewel4)) ; after 4 guardians
      (mulana      . (diary)) ; after diary sequence
      (reader.exe  . ()) ; buy from store 50g
      (deathv.exe  . ()) ; free behind xelpud statue
@@ -130,19 +130,22 @@ Speedrun guide:
      ; items in temple of the sun
      (dagger       . ())
      (lifeup4      . ())
-     (map4         . ())
+     (map4         . ()) ; do the pyramid runaround under grail tablet
      (jewel3       . ()) ; ellmac's gem
-     (book-of-dead . (origin))
+     (book-of-dead . (origin)) ; free mulbruk, talk to her for a bit, meet anubis, go back
      (mirror       . (origin))
      (pregnant     . (woman))
+     (talisman     . (jewel5)) ; post ViY, statue crumbles
 
      ; items in the spring in the sky
+     (map5        . ()) ; room after caltrops
      (origin      . (helmet)) ; elevator jump
      (scalesphere . (origin)) ; after miniboss
-     (jewel5      . ()) ; whack-a-fish
+     (jewel4      . ()) ; whack-a-fish
      (lifeup5     . (birth)) ; left elevator 
-     (glove       . ()) ; after unlocking the push block
+     (glove       . ()) ; after unlocking the push block via spring puzzle
      (caltrops    . ()) ; transition glitch
+     (randc.exe   . (birth)) ; birth
 
      ; inferno cavern
      (flare       . ()) ; transition glitch
@@ -156,13 +159,13 @@ Speedrun guide:
      (chakram . ()) ; free
      (life    . (birth)) ; dark platform jumping section
      (map7    . ())
-     (lifeup6 . ())
+     (lifeup7 . ())
      (mantra.exe . (magatama torude.exe)) ; use magatama jewel then scan
 
      ; twin labyrinth
      (katana     . (twin-statue))
      (ring       . ())
-     (lifeup7    . ())
+     (lifeup8    . ())
      (helmet     . ())
      (bracelet   . ()) ; 150g
      (dragonbone . (helmet)) ; kinda not but kinda is
@@ -175,8 +178,12 @@ Speedrun guide:
      (keyblade . ())
      (twin-statue . (infinity-key))
 
-     ; shrine of awakening
+     ; shrine of mother (both versions)
+     (map10 . ())
+     (diary . (talisman))
+     (death . (dragonbone yagomap.exe yagostr.exe))
      (crystal-skull . ())
+     (bounce.exe . (infinity-key)) ; requires getting here
 
      ; flipside!!
      ; gate of illusion
@@ -194,10 +201,11 @@ Speedrun guide:
      (spears  . ())
      (lifeup8 . (mirror)) ; enter thru graveyard
      (djed    . (death)) ; needs secret passage from birth->extinct->ruin
+     (jewel5  . (mirror)) ; earliest way of getting here is thru graveyard
 
      ; items in temple of the moon
      (axe     . ())
-     (serpent . (book-of-dead)) ; for feather
+     (serpent . (book-of-dead)) ; for feather, beat anubis
      (medicine . cup)
 
      ; tower of the goddess
@@ -224,8 +232,46 @@ Speedrun guide:
      ; * the la-mulana talisman to dispel
      ; * dragonbone skull
      ; * keyblade to unlock the boss fight
-     (treasure-of-life . (origin birth life death keyblade talisman dragonbone))
+     (treasure-of-life . (origin birth life death keyblade talisman dragonbone
+                                 yagomap.exe yagostr.exe ; required for dragonbone
+                                 infinity-key ; required to access area
+                                 ,@(only-if-100% '(100%))
+                                 ))
+
+     ; 100% completionist "items" (groups of existing items)
+     (all-store-items . ())
+     (all-software . (randc.exe bounce.exe mirai.exe mekuri.exe
+                                deathv.exe bunplus.exe capstar.exe
+                                guild.exe))
+
+     ; shortcut all maps into one item tag
+     (all-maps . (map1 map2 map3 map4 map5 map6 map7 map8 map9
+                       map10 map11 map12 map13 map14 map15 map16 map17))
+
+     ; same, bind all lifeups into one tag
+     (all-lifeups . (lifeup1 lifeup2 lifeup3 lifeup4 lifeup5
+                             lifeup6 lifeup7 lifeup8 lifeup9))
+
+     
+     ; fairy vest - cuts damage in half, but not required (also kills achievements)
+     ; waterproof laptop case - not necessary
+     ; lavaproof laptop case - also not necessary
+     ; bikini - after beating Hell Temple fully, not necessary
+     ; shield - not required at all
+     ; silver shield - an upgraded shield - not necessary though
+     ; gun - a way to kill bosses by grinding, not necessary however
+     ; grapple claws - technically not needed for anything progression wise
+     (all-extra-items . (fairy-vest waterproof lavaproof bikini shield silvershield gun
+                                    perfume batbook cross chainwhip flailwhip
+                                    ))
+     
+     ; all items, including special bikini
+     ; this includes software, extra items, weapons (gun), shields, etc
+     (100%-completion . (all-store-items all-software all-extra-items))
      )))
+
+
+
 
 
 (module+ main
