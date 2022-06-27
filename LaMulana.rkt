@@ -85,94 +85,114 @@ Speedrun guide:
 (define/contract only-if-100%
   (-> list? list?)
   (only-if-wrap *collect-everything?*))
+
+(define nil '())
+
+; Basic graph structure w/ node container
+(struct Node (id proper-name requireds))
+(struct Graph (nodes edges))
+
+
+; usable with foldl/foldr
+(define (Graph-add-node node G)
+  (let ([node-hash (Graph-nodes G)]
+        [nid (Node-id node)])
+    (Graph
+     (if (hash-has-key? node-hash nid)
+         G
+         (hash-update node-hash nid node))
+     (Graph-edges G))))
+
+(define (Graph-init #:starting-nodes [sn '()])
+  (Graph (make-immutable-hash '()) '()))
+
   
 ; This is the complete and total graph of items in La-Mulana
 ; All NECESSARY items are here
 ; Unnecessary items are tracked, but are not required for end-of-game
 ; A setting can be toggled on to include them as needed
 (define/contract (Build-Graph)
-  (-> (hash/c symbol? (listof symbol?)))
-  (make-immutable-hash
-   `(; items in the surface
-     (scanner     . ()) ; store 10g
-     (shell       . ()) ; free
-     (feather     . (serpent)) ; argus
-     (birth       . (origin)) ; cliffside waterfall
-     (lifeup1     . ()) ; below the seal
-     (map1        . ()) ; on a skeleton
-     (buckler     . ()) ; store
-     (waterproof  . ()) ; store
-     (laptop2     . '(jewel1 jewel2 jewel3 jewel4)) ; after 4 guardians
-     (mulana      . (diary)) ; after diary sequence
-     (reader.exe  . ()) ; buy from store 50g
-     (deathv.exe  . ()) ; free behind xelpud statue
-     (yagomap.exe . ()) ; store 20g
-     (mekuri.exe  . ()) ; waterfall ladder secret tent
-
-     ; items in gate of guidance
-     (grail      . ()) ; holy grail is required later on
-     (shuriken   . ()) ; screen transition glitch
-     (jewel1     . ()) ; amphisbaena's jewel
-     (lifeup2    . ()) ; entrance
-     (map2       . ()) ; chest before elevator
-     (crucifix   . (flare life)) ; anti-ghosts
-     (treasure   . (pepper)) ; gate of illusion quest
-     (guild.exe  . ()) ; 60g secret store
-     (yagostr.exe . (eden)) ; after gate of illusion shortcut
-
-     ; items in the mausoleum of giants
-     (rolling . ()) ; ghost king miniboss
-     (hermes  . ()) ; store 60g
-     (jewel2  . ()) ; sakit's gem with day/night/star puzzle
-     (lifeup3 . ()) ; inside a foot
-     (map3    . ()) ; floor switch puzzle
-
-     ; items in temple of the sun
-     (dagger       . ())
-     (lifeup4      . ())
-     (map4         . ()) ; do the pyramid runaround under grail tablet
-     (jewel3       . ()) ; ellmac's gem
-     (book-of-dead . (origin)) ; free mulbruk, talk to her for a bit, meet anubis, go back
-     (mirror       . (origin))
-     (pregnant     . (woman))
-     (talisman     . (jewel5)) ; post ViY, statue crumbles
-
-     ; items in the spring in the sky
-     (map5        . ()) ; room after caltrops
-     (origin      . (helmet)) ; elevator jump
-     (scalesphere . (origin)) ; after miniboss
-     (jewel4      . ()) ; whack-a-fish
-     (lifeup5     . (birth)) ; left elevator 
-     (glove       . ()) ; after unlocking the push block via spring puzzle
-     (caltrops    . ()) ; transition glitch
-     (randc.exe   . (birth)) ; birth
-
-     ; inferno cavern
-     (flare       . ()) ; transition glitch
-     (map6        . ()) ; free
-     (ice-cape    . ()) ; at the end
-     (bunplus.com . ()) ; hidden rock spot by grail tab
-     (capstar.exe . ()) ; 150g from store
-     (chainwhip   . (birth claws)) ; after miniboss
-
+  (-> Graph?)
+  ;; write all items out in Graph Node form with symbol * string * list
+  (define all-items
+    `(; surface
+      (Node scanner     "Hand Scanner"      nil)
+      (Node shell       "Shell Horn"        nil)
+      (Node feather     "Feather"           '(serpent))
+      (Node birth       "Birth Seal"        '(origin))
+      (Node lifeup1     "Life Orb (Surface)" nil) ; technically possible
+      (Node map1        "Map (Surface)"     nil)
+      (Node bucker      "Buckler"           nil)
+      (Node waterproof  "Waterproof Case"   nil)
+      (Node laptop2     "MSX 5000"          '(jewel1 jewel2 jewel3 jewel4))
+      (Node mulana      "Mulana Talisman"   '(diary))
+      (Node reader.exe  "reader.exe"        nil)
+      (Node deathv.exe  "deathv.exe"        nil)
+      (Node yagomap.exe "yagomap.exe"       nil)
+      (Node mekuri.exe  "mekuri.exe"        nil)
+      ; gate of guidance
+      (Node grail       "Holy Grail"                  nil)
+      (Node shuriken    "Shuriken"                    nil)
+      (Node jewel1      "Ankh Jewel (Amphisbaena)"    nil)
+      (Node lifeup2     "Life Orb (Gate of Guidance)" nil)
+      (Node map2        "Map (Gate of Guidance)"      nil)
+      (Node crucifix    "Crucifix"                    '(flare life))
+      (Node treasure    "Treausres"                   '(pepper))
+      (Node guild.exe   "guild.exe"                   nil)
+      (Node yagostr.exe "yagostr.exe"                 '(eden))
+      ; mausoleum of giants
+      (Node rolling     "Rolling Shuriken"  nil)
+      (Node hermes      "Hermes' Boots"     nil)
+      (Node jewel2      "Ankh Jewel (Sakit)" nil)
+      (Node lifeup3     "Life Orb (Mausoleum of Giants)" nil)
+      (Node map3        "Map (Mausoleum of Giants)" nil)
+      ; temple of the sun
+      (Node knife "Knife" nil)
+      (Node lifeup4 "Life Orb (Temple of the Sun)" nil)
+      (Node map4 "Map (Temple of the Sun)" nil)
+      (Node jewel3 "Ankh Jewel (Ellmac)" nil)
+      (Node book-of-dead "Book of the Dead" '(origin))
+      (Node mirror "Bronze Mirror" '(origin))
+      (Node pregnant "Pregnant Woman Statue" '(woman))
+      (Node talisman "Talisman" '(jewel5))
+      ; spring in the sky
+      (Node map5 "Map (Spring in the Sky)" nil)
+      (Node origin "Origin Seal" nil)
+      (Node scalesphere "Scalesphere" '(origin))
+      (Node jewel4 "Ankh Jewel (Bahamut)" '(origin)) ; origin req'd to activate ankh
+      (Node lifeup5 "Life Orb (Spring in the Sky)" '(birth))
+      (Node glove "Gloves" nil)
+      (Node caltrops "Caltrops" nil) ; transition glitch
+      (Node randc.exe "randc.exe" '(birth))
+      ; inferno cavern
+      (Node flare "Flare Gun" nil)
+      (Node map6 "Map (Inferno Cavern)" nil)
+      (Node ice-cape "Ice Cape" nil)
+      (Node bunplus.exe "bunplus.exe" nil)
+      (Node capstar.exe "capstar.exe" nil)
+      (Node chainwhip "Chain Whip" '(birth claws))
+      ; chamber of extinction
+      (Node chakram "Chakram" nil)
+      (Node life "Life Seal" '(birth))
+      (Node map7 "Map (Chamber of Extinction)" nil)
+      (Node lifeup7 "Life Orb (Chamber of Extinction)" nil)
+      (Node mantra.exe "mantra.exe" '(magatama torude.exe))
+      ; twin labyrinth
+      (Node katana "Katana" '(twin-statue))
+      (Node ring "Ring" '(twin-statue))
+      (Node lifeup8 "Life Orb (Twin Labyrinths)" '(twin-statue))
+      (Node helmet "Helmet" nil)
+      (Node dragonbone "Dragon Bone" '(helmet)) ; not technically, but realistically
+      (Node time-lamp "Time Lamp" '(grenades))
+      (Node jewel7 "Ankh Jewel (Baphomet)" '(twin-statue))
+      (Node map8 "Map (Twin Labyrinths)" '(twin-statue))
+      ; endless corridor
+      (Node map9 "Map (Endless Corridor)" nil)
+      (Node keyblade "Key Blade" '(infinity-key))
+      (Node twin-statue "Twin Statue" '(infinity-key))
+      ))
+  (make-immutable-hash '(
      ; chamber of extinction
-     (chakram . ()) ; free
-     (life    . (birth)) ; dark platform jumping section
-     (map7    . ())
-     (lifeup7 . ())
-     (mantra.exe . (magatama torude.exe)) ; use magatama jewel then scan
-
-     ; twin labyrinth
-     (katana     . (twin-statue))
-     (ring       . ())
-     (lifeup8    . ())
-     (helmet     . ())
-     (bracelet   . ()) ; 150g
-     (dragonbone . (helmet)) ; kinda not but kinda is
-     (time-lamp  . (grenades)) ; 200g
-     (jewel7     . ())
-     (map8       . ())
-
      ; endless corridor
      (map9     . ())
      (keyblade . ())
@@ -269,8 +289,6 @@ Speedrun guide:
      ; this includes software, extra items, weapons (gun), shields, etc
      (100%-completion . (all-store-items all-software all-extra-items))
      )))
-
-
 
 
 
